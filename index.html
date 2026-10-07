@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Haushaltsbestand">
+<meta name="theme-color" content="#176b4d">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Haushaltsbestand</title>
+<style>
+:root{--green:#176b4d;--bg:#f3f6f4;--text:#17221e;--muted:#68736e}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;padding-bottom:env(safe-area-inset-bottom)}
+header{background:var(--green);color:white;padding:calc(14px + env(safe-area-inset-top)) 16px 12px;position:sticky;top:0;z-index:5}
+h1{font-size:22px;margin:0}.sub{font-size:12px;opacity:.85;margin-top:2px}
+nav{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
+nav button{border:0;border-radius:12px;padding:11px 4px;font-size:13px;background:#e7eee9;color:#164a37;font-weight:600}
+nav button.active{background:white}
+main{padding:14px;max-width:700px;margin:auto}.view{display:none}.view.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.card{background:#fff;border-radius:14px;padding:11px;text-align:center;box-shadow:0 1px 5px #0001}.num{font-size:22px;font-weight:750}.label{font-size:11px;color:var(--muted)}
+input,select{width:100%;font-size:16px;padding:13px;border:1px solid #ccd6d1;border-radius:12px;background:#fff;min-height:46px}
+.toolbar{display:grid;grid-template-columns:1fr 130px;gap:7px;margin:12px 0}
+.item{background:#fff;border-radius:15px;padding:13px;margin:8px 0;box-shadow:0 1px 5px #0001}
+.itemtop{display:flex;justify-content:space-between;gap:10px}.item h3{margin:0 0 4px;font-size:17px}.meta{font-size:12px;color:var(--muted)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+button.action{border:0;border-radius:12px;padding:12px;font-size:15px;font-weight:650}
+.green{background:var(--green);color:#fff}.red{background:#b83b3b;color:#fff}.gray{background:#e7eee9;color:#164a37}.orange{background:#d98a16;color:#fff}
+.notice{background:#fff1cf;border-radius:11px;padding:10px;margin-top:9px;font-size:13px}
+form{background:#fff;padding:14px;border-radius:15px;box-shadow:0 1px 5px #0001}.field{margin-bottom:10px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.modal{position:fixed;inset:0;background:#000b;z-index:20;display:none;align-items:flex-end}.modal.open{display:flex}.sheet{background:#fff;width:100%;border-radius:20px 20px 0 0;padding:14px calc(14px + env(safe-area-inset-right)) calc(16px + env(safe-area-inset-bottom))}.sheet h2{margin:0 0 10px}.scanvideo{width:100%;height:45vh;object-fit:cover;background:#111;border-radius:15px}.scanline{position:relative;margin-top:-24vh;height:2px;background:#e33;opacity:.8;margin-bottom:calc(24vh - 2px)}.scanmodes{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:9px 0}
+.empty{text-align:center;color:var(--muted);padding:35px 10px}
+.small{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header><h1>🏠 Haushaltsbestand</h1><div class="sub">iPhone-Version · Bestand & Einkaufsliste</div>
+<nav>
+<button class="tab active" data-v="bestand">Bestand</button>
+<button class="tab" data-v="einkauf">Einkauf</button>
+<button class="tab" data-v="neu">＋ Artikel</button>
+<button class="tab" data-v="daten">Daten</button>
+</nav></header>
+<main>
+<section id="bestand" class="view active">
+<div class="cards"><div class="card"><div class="num" id="nA">0</div><div class="label">Artikel</div></div><div class="card"><div class="num" id="nP">0</div><div class="label">Stück</div></div><div class="card"><div class="num" id="nL">0</div><div class="label">Nachkaufen</div></div></div>
+<div class="toolbar"><input id="search" placeholder="Artikel oder EAN"><select id="filter"><option value="">Alle</option></select></div>
+<div id="list"></div>
+</section>
+<section id="einkauf" class="view"><h2>Einkaufsliste</h2><div id="shop"></div></section>
+<section id="neu" class="view"><h2>Artikel</h2><form id="form"><input type="hidden" id="id">
+<div class="field"><label>EAN</label><div class="actions"><input id="ean" inputmode="numeric" placeholder="EAN"><button type="button" class="action green" id="scanNew">📷 Scannen</button></div></div>
+<div class="field"><label>Bezeichnung</label><input id="name" required placeholder="z. B. Corn Flakes"></div>
+<div class="row"><div class="field"><label>Menge</label><input id="qty" type="number" min="0" value="1"></div><div class="field"><label>Mindestbestand</label><input id="min" type="number" min="0" value="1"></div></div>
+<div class="row"><div class="field"><label>Kategorie</label><select id="cat"><option>Lebensmittel</option><option>Getränke</option><option>Haushalt</option><option>Hygiene</option><option>Sonstiges</option></select></div><div class="field"><label>Lagerort</label><input id="place" placeholder="Küche"></div></div>
+<div class="field"><label>Haltbarkeit</label><input id="expiry" type="date"></div>
+<div class="actions"><button class="action green" type="submit">Speichern</button><button class="action gray" type="button" id="reset">Zurücksetzen</button></div>
+</form></section>
+<section id="daten" class="view"><h2>Daten</h2><div class="item"><p class="small">Die Bestandsdaten werden auf diesem iPhone im Browser gespeichert.</p><div class="actions"><button class="action green" id="export">Sicherung</button><label class="action gray" style="text-align:center">Import<input id="import" type="file" accept=".json" hidden></label></div><button class="action red" style="width:100%;margin-top:7px" id="clear">Alles löschen</button></div></section>
+</main>
+
+<div class="modal" id="modal"><div class="sheet"><h2>📷 Barcode scannen</h2><div class="scanmodes"><button class="action red" id="mminus">Verbrauch −1</button><button class="action green" id="mplus">Einlagern +1</button></div><video id="video" class="scanvideo" autoplay muted playsinline></video><div class="scanline"></div><div class="actions"><button class="action gray" id="manual">EAN manuell</button><button class="action gray" id="close">Schließen</button></div><p id="scanStatus" class="small"></p></div></div>
+
+<script src="https://unpkg.com/@zxing/browser@0.2.1/umd/zxing-browser.min.js"></script>
+<script>
+const KEY="haushaltsbestand_iphone_v1";let items=JSON.parse(localStorage.getItem(KEY)||"[]"),reader=null,controls=null,mode="minus";
+const $=id=>document.getElementById(id);
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function low(x){return Number(x.qty)<=Number(x.min)}
+function save(){localStorage.setItem(KEY,JSON.stringify(items));render()}
+function render(){let q=$("search").value.toLowerCase(),f=$("filter").value;let cats=[...new Set(items.map(x=>x.cat).filter(Boolean))],old=f;$("filter").innerHTML='<option value="">Alle</option>'+cats.map(c=>`<option>${esc(c)}</option>`).join("");$("filter").value=cats.includes(old)?old:"";$("nA").textContent=items.length;$("nP").textContent=items.reduce((a,x)=>a+Number(x.qty||0),0);$("nL").textContent=items.filter(low).length;let arr=items.filter(x=>(!q||(`${x.name} ${x.ean}`).toLowerCase().includes(q))&&(!f||x.cat===f));$("list").innerHTML=arr.length?arr.map(card).join(""):'<div class="empty">Keine Artikel vorhanden.</div>';let sh=items.filter(low);$("shop").innerHTML=sh.length?sh.map(x=>`<div class="item"><div class="itemtop"><div><h3>${esc(x.name)}</h3><div class="meta">Bestand ${x.qty} · Minimum ${x.min}</div></div></div><div class="actions"><button class="action green" onclick="plus('${x.id}')">+1 gekauft</button><button class="action gray" onclick="edit('${x.id}')">Bearbeiten</button></div></div>`).join(""):'<div class="empty">Einkaufsliste ist leer 🎉</div>'}
+function card(x){return `<div class="item"><div class="itemtop"><div><h3>${esc(x.name)}</h3><div class="meta">${esc(x.cat)} · ${esc(x.place||"kein Lagerort")} · EAN ${esc(x.ean||"—")}</div></div><b>${x.qty}</b></div>${low(x)?'<div class="notice">⚠️ Auf Einkaufsliste</div>':""}<div class="actions"><button class="action red" onclick="minus('${x.id}')">−1 Verbrauch</button><button class="action green" onclick="plus('${x.id}')">+1 Einlagern</button><button class="action gray" onclick="edit('${x.id}')">Bearbeiten</button><button class="action gray" onclick="removeItem('${x.id}')">Löschen</button></div></div>`}
+function minus(id){let x=items.find(i=>i.id===id);if(x){x.qty=Math.max(0,Number(x.qty)-1);save()}}function plus(id){let x=items.find(i=>i.id===id);if(x){x.qty=Number(x.qty)+1;save()}}function removeItem(id){if(confirm("Artikel löschen?")){items=items.filter(x=>x.id!==id);save()}}
+function edit(id){let x=items.find(i=>i.id===id);if(!x)return;show("neu");$("id").value=x.id;$("ean").value=x.ean;$("name").value=x.name;$("qty").value=x.qty;$("min").value=x.min;$("cat").value=x.cat;$("place").value=x.place;$("expiry").value=x.expiry||""}
+function show(v){document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));$(v).classList.add("active");document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.v===v))}
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>show(x.dataset.v));$("search").oninput=render;$("filter").onchange=render;$("reset").onclick=()=>{$("form").reset();$("id").value="";$("qty").value=1;$("min").value=1};
+$("form").onsubmit=e=>{e.preventDefault();let id=$("id").value||crypto.randomUUID(),x={id,ean:$("ean").value.trim(),name:$("name").value.trim(),qty:Number($("qty").value),min:Number($("min").value),cat:$("cat").value,place:$("place").value.trim(),expiry:$("expiry").value},i=items.findIndex(a=>a.id===id);if(i>=0)items[i]=x;else items.push(x);save();$("reset").click();show("bestand")};
+$("export").onclick=()=>{let b=new Blob([JSON.stringify(items,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="haushaltsbestand-sicherung.json";a.click()};
+$("import").onchange=e=>{let f=e.target.files[0],r=new FileReader();if(f)r.onload=()=>{try{items=JSON.parse(r.result);save();alert("Import erfolgreich.")}catch{alert("Import fehlgeschlagen.")}};r.readAsText(f)};
+$("clear").onclick=()=>{if(confirm("Alle Daten löschen?")){items=[];save()}};
+$("scanNew").onclick=()=>openScanner("new");$("mminus").onclick=()=>mode="minus";$("mplus").onclick=()=>mode="plus";$("close").onclick=closeScanner;$("manual").onclick=()=>{let e=prompt("EAN eingeben");if(e)handleEAN(e.trim())};
+async function openScanner(m){mode=m;$("modal").classList.add("open");$("scanStatus").textContent="Kamera wird gestartet…";try{if(!window.ZXingBrowser)throw Error();reader=new ZXingBrowser.BrowserMultiFormatReader();let devices=await ZXingBrowser.BrowserCodeReader.listVideoInputDevices();let back=devices.find(d=>/back|rear|environment/i.test(d.label))||devices[devices.length-1];controls=await reader.decodeFromVideoDevice(back?.deviceId, $("video"), (result,error)=>{if(result)handleEAN(result.getText())});$("scanStatus").textContent="Barcode mittig ins Bild halten."}catch(e){$("scanStatus").textContent="Scanner konnte nicht gestartet werden. Bitte EAN manuell eingeben."}}
+function closeScanner(){try{controls?.stop()}catch{}controls=null;try{reader?.reset()}catch{}reader=null;$("modal").classList.remove("open")}
+function handleEAN(ean){if(mode==="new"){closeScanner();show("neu");$("ean").value=ean;let x=items.find(i=>i.ean===ean);if(x)edit(x.id);else $("name").focus();return}let x=items.find(i=>i.ean===ean);if(!x){closeScanner();if(confirm("EAN nicht gefunden. Neuen Artikel anlegen?")){show("neu");$("ean").value=ean;$("name").focus()}return}if(mode==="plus")x.qty++;else x.qty=Math.max(0,x.qty-1);save();closeScanner();show("bestand")}
+render();if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body></html>
