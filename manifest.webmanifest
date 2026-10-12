@@ -1,5 +1,1 @@
-{
-"name":"Haushaltsbestand","short_name":"Haushalt","start_url":"./","display":"standalone",
-"background_color":"#f3f6f4","theme_color":"#176b4d",
-"icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml"}]
-}
+{"name":"Mein Haushaltshelfer Plus","short_name":"Haushaltshelfer","start_url":"./index.html","display":"standalone","background_color":"#f7f9f7","theme_color":"#2f6b55","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}

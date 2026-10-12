@@ -1,88 +1,64 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Haushaltsbestand">
-<meta name="theme-color" content="#176b4d">
-<link rel="manifest" href="manifest.webmanifest">
-<title>Haushaltsbestand</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2f6b55"><link rel="manifest" href="manifest.webmanifest">
+<title>Mein Haushaltshelfer Plus</title>
 <style>
-:root{--green:#176b4d;--bg:#f3f6f4;--text:#17221e;--muted:#68736e}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;padding-bottom:env(safe-area-inset-bottom)}
-header{background:var(--green);color:white;padding:calc(14px + env(safe-area-inset-top)) 16px 12px;position:sticky;top:0;z-index:5}
-h1{font-size:22px;margin:0}.sub{font-size:12px;opacity:.85;margin-top:2px}
-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
-nav button{border:0;border-radius:12px;padding:11px 4px;font-size:13px;background:#e7eee9;color:#164a37;font-weight:600}
-nav button.active{background:white}
-main{padding:14px;max-width:700px;margin:auto}.view{display:none}.view.active{display:block}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.card{background:#fff;border-radius:14px;padding:11px;text-align:center;box-shadow:0 1px 5px #0001}.num{font-size:22px;font-weight:750}.label{font-size:11px;color:var(--muted)}
-input,select{width:100%;font-size:16px;padding:13px;border:1px solid #ccd6d1;border-radius:12px;background:#fff;min-height:46px}
-.toolbar{display:grid;grid-template-columns:1fr 130px;gap:7px;margin:12px 0}
-.item{background:#fff;border-radius:15px;padding:13px;margin:8px 0;box-shadow:0 1px 5px #0001}
-.itemtop{display:flex;justify-content:space-between;gap:10px}.item h3{margin:0 0 4px;font-size:17px}.meta{font-size:12px;color:var(--muted)}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
-button.action{border:0;border-radius:12px;padding:12px;font-size:15px;font-weight:650}
-.green{background:var(--green);color:#fff}.red{background:#b83b3b;color:#fff}.gray{background:#e7eee9;color:#164a37}.orange{background:#d98a16;color:#fff}
-.notice{background:#fff1cf;border-radius:11px;padding:10px;margin-top:9px;font-size:13px}
-form{background:#fff;padding:14px;border-radius:15px;box-shadow:0 1px 5px #0001}.field{margin-bottom:10px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.modal{position:fixed;inset:0;background:#000b;z-index:20;display:none;align-items:flex-end}.modal.open{display:flex}.sheet{background:#fff;width:100%;border-radius:20px 20px 0 0;padding:14px calc(14px + env(safe-area-inset-right)) calc(16px + env(safe-area-inset-bottom))}.sheet h2{margin:0 0 10px}.scanvideo{width:100%;height:45vh;object-fit:cover;background:#111;border-radius:15px}.scanline{position:relative;margin-top:-24vh;height:2px;background:#e33;opacity:.8;margin-bottom:calc(24vh - 2px)}.scanmodes{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:9px 0}
-.empty{text-align:center;color:var(--muted);padding:35px 10px}
-.small{font-size:12px;color:var(--muted)}
-</style>
-</head>
+:root{--green:#2f6b55;--pale:#edf5ef;--ink:#20312a;--line:#dce5de}*{box-sizing:border-box}body{margin:0;font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:#f7f9f7}header{background:var(--green);color:white;padding:22px max(16px,calc((100% - 1000px)/2))}header h1{margin:0 0 6px;font-size:26px}header p{margin:0;opacity:.9}.wrap{max-width:1000px;margin:auto;padding:16px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.tabs button,button{border:0;border-radius:10px;padding:10px 13px;background:var(--green);color:white;font:inherit;cursor:pointer}.tabs button{background:#e4ece6;color:var(--ink)}.tabs button.active{background:var(--green);color:white}.panel{display:none}.panel.active{display:block}.card{background:white;border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}.stat{background:var(--pale);padding:14px;border-radius:12px}.stat strong{display:block;font-size:24px;margin-top:5px}input,select,textarea{font:inherit;border:1px solid #bdcbc0;border-radius:9px;padding:10px;max-width:100%;width:100%;background:white}label{display:block;font-size:14px;margin:8px 0 4px}.formrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}.item{display:flex;gap:10px;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:10px 0}.item:last-child{border-bottom:0}.item small{display:block;color:#617166;margin-top:3px}.danger{background:#a43d36}.secondary{background:#e4ece6;color:var(--ink)}.muted{color:#617166;font-size:14px}.meal{padding:12px 0;border-bottom:1px solid var(--line)}.meal:last-child{border-bottom:0}.meal h3{margin:0 0 5px}.meal p{margin:4px 0}.done{text-decoration:line-through;color:#718076}@media(min-width:700px){.twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px}}
+</style></head>
 <body>
-<header><h1>🏠 Haushaltsbestand</h1><div class="sub">iPhone-Version · Bestand & Einkaufsliste</div>
-<nav>
-<button class="tab active" data-v="bestand">Bestand</button>
-<button class="tab" data-v="einkauf">Einkauf</button>
-<button class="tab" data-v="neu">＋ Artikel</button>
-<button class="tab" data-v="daten">Daten</button>
-</nav></header>
-<main>
-<section id="bestand" class="view active">
-<div class="cards"><div class="card"><div class="num" id="nA">0</div><div class="label">Artikel</div></div><div class="card"><div class="num" id="nP">0</div><div class="label">Stück</div></div><div class="card"><div class="num" id="nL">0</div><div class="label">Nachkaufen</div></div></div>
-<div class="toolbar"><input id="search" placeholder="Artikel oder EAN"><select id="filter"><option value="">Alle</option></select></div>
-<div id="list"></div>
+<header><h1>Mein Haushaltshelfer Plus</h1><p>Vorräte · Essensplan · Einkaufsliste · Haushaltskasse</p></header>
+<main class="wrap">
+<nav class="tabs" aria-label="Bereiche">
+<button class="active" data-tab="home">Übersicht</button><button data-tab="pantry">Vorräte</button><button data-tab="meals">Essensplan</button><button data-tab="shopping">Einkaufsliste</button><button data-tab="money">Haushaltskasse</button><button data-tab="backup">Sicherung</button>
+</nav>
+<section id="home" class="panel active">
+<div class="card"><h2>Willkommen!</h2><p>Hier kannst du eure Vorräte, Mahlzeiten, Einkäufe und Ausgaben an einem Ort verwalten.</p><div class="stats"><div class="stat">Vorräte mit wenig Bestand<strong id="lowCount">0</strong></div><div class="stat">Offene Einkäufe<strong id="shopCount">0</strong></div><div class="stat">Ausgaben diesen Monat<strong id="monthSpend">0,00 €</strong></div><div class="stat">Monatsbudget übrig<strong id="remaining">100,00 €</strong></div></div></div>
+<div class="card"><h2>Diese Woche essen wir</h2><div id="homeMeals"></div></div>
 </section>
-<section id="einkauf" class="view"><h2>Einkaufsliste</h2><div id="shop"></div></section>
-<section id="neu" class="view"><h2>Artikel</h2><form id="form"><input type="hidden" id="id">
-<div class="field"><label>EAN</label><div class="actions"><input id="ean" inputmode="numeric" placeholder="EAN"><button type="button" class="action green" id="scanNew">📷 Scannen</button></div></div>
-<div class="field"><label>Bezeichnung</label><input id="name" required placeholder="z. B. Corn Flakes"></div>
-<div class="row"><div class="field"><label>Menge</label><input id="qty" type="number" min="0" value="1"></div><div class="field"><label>Mindestbestand</label><input id="min" type="number" min="0" value="1"></div></div>
-<div class="row"><div class="field"><label>Kategorie</label><select id="cat"><option>Lebensmittel</option><option>Getränke</option><option>Haushalt</option><option>Hygiene</option><option>Sonstiges</option></select></div><div class="field"><label>Lagerort</label><input id="place" placeholder="Küche"></div></div>
-<div class="field"><label>Haltbarkeit</label><input id="expiry" type="date"></div>
-<div class="actions"><button class="action green" type="submit">Speichern</button><button class="action gray" type="button" id="reset">Zurücksetzen</button></div>
-</form></section>
-<section id="daten" class="view"><h2>Daten</h2><div class="item"><p class="small">Die Bestandsdaten werden auf diesem iPhone im Browser gespeichert.</p><div class="actions"><button class="action green" id="export">Sicherung</button><label class="action gray" style="text-align:center">Import<input id="import" type="file" accept=".json" hidden></label></div><button class="action red" style="width:100%;margin-top:7px" id="clear">Alles löschen</button></div></section>
+<section id="pantry" class="panel"><div class="card"><h2>Vorräte verwalten</h2><form id="pantryForm"><div class="formrow"><div><label>Lebensmittel</label><input id="pName" required placeholder="z. B. Milch"></div><div><label>Menge</label><input id="pQty" type="number" min="0" step="0.1" value="1" required></div><div><label>Einheit</label><input id="pUnit" placeholder="Stück, Packung, kg"></div><div><label>Mindestbestand</label><input id="pMin" type="number" min="0" step="0.1" value="1"></div><div><label>Mindesthaltbar bis</label><input id="pExpiry" type="date"></div><div><label>Kategorie</label><select id="pCat"><option>Lebensmittel</option><option>Getränke</option><option>Haushalt</option><option>Gefrierfach</option></select></div></div><p><button type="submit">Vorrat hinzufügen</button></p></form></div><div class="card"><h2>Deine Vorräte</h2><div id="pantryList"></div></div></section>
+<section id="meals" class="panel"><div class="card"><h2>Essensplan für 4 Personen</h2><p class="muted">Die Kosten sind grobe Schätzungen und können je nach Geschäft und Vorräten abweichen.</p><div id="mealList"></div><button id="weekShop">Zutaten für die Woche auf die Einkaufsliste setzen</button></div><div class="card"><h2>Rezeptdetails</h2><div id="recipeDetails">Wähle ein Gericht aus, um Zutaten und Zubereitung zu sehen.</div></div></section>
+<section id="shopping" class="panel"><div class="card"><h2>Einkaufsliste</h2><form id="shopForm"><div class="formrow"><div><label>Artikel</label><input id="sName" required placeholder="z. B. Äpfel"></div><div><label>Menge / Notiz</label><input id="sQty" placeholder="z. B. 1 kg"></div></div><p><button type="submit">Artikel hinzufügen</button></p></form><div id="shoppingList"></div><p><button class="secondary" id="offers">Angebote im Web suchen</button></p><p class="muted">Die Angebotssuche öffnet eine Websuche und zeigt keine verifizierten Live-Preise.</p></div></section>
+<section id="money" class="panel"><div class="card"><h2>Haushaltskasse</h2><div class="formrow"><div><label>Monatsbudget (€)</label><input id="budget" type="number" min="0" step="1" value="100"></div></div><form id="moneyForm"><div class="formrow"><div><label>Art</label><select id="mType"><option value="expense">Ausgabe</option><option value="income">Einnahme</option></select></div><div><label>Betrag (€)</label><input id="mAmount" type="number" min="0.01" step="0.01" required></div><div><label>Kategorie</label><select id="mCat"><option>Lebensmittel</option><option>Haushalt</option><option>Sonstiges</option><option>Erstattung</option></select></div><div><label>Datum</label><input id="mDate" type="date" required></div><div><label>Notiz</label><input id="mNote" placeholder="z. B. Wocheneinkauf"></div></div><p><button type="submit">Buchung speichern</button></p></form><h3>Buchungen</h3><div id="moneyList"></div></div></section>
+<section id="backup" class="panel"><div class="card"><h2>Datensicherung</h2><p>Die Daten werden in diesem Browser auf diesem Gerät gespeichert. Für ein anderes Gerät kannst du sie exportieren und dort wieder importieren.</p><p><button id="export">Sicherung herunterladen</button></p><label>Vorhandene Sicherung importieren (JSON)</label><input id="importFile" type="file" accept=".json,application/json"><p class="muted">Import ersetzt die derzeit gespeicherten App-Daten.</p></div><div class="card"><h2>Wichtige Hinweise</h2><ul><li>Dies ist eine Web-App, keine App aus dem App Store.</li><li>Mac und iPhone synchronisieren sich nicht automatisch.</li><li>Zum Installieren auf dem iPhone muss die App über eine HTTPS-Adresse erreichbar sein.</li><li>EAN-Produktabfrage benötigt Internet; ein Kamera-Barcode-Scanner ist in dieser Version nicht enthalten.</li></ul></div></section>
 </main>
-
-<div class="modal" id="modal"><div class="sheet"><h2>📷 Barcode scannen</h2><div class="scanmodes"><button class="action red" id="mminus">Verbrauch −1</button><button class="action green" id="mplus">Einlagern +1</button></div><video id="video" class="scanvideo" autoplay muted playsinline></video><div class="scanline"></div><div class="actions"><button class="action gray" id="manual">EAN manuell</button><button class="action gray" id="close">Schließen</button></div><p id="scanStatus" class="small"></p></div></div>
-
-<script src="https://unpkg.com/@zxing/browser@0.2.1/umd/zxing-browser.min.js"></script>
 <script>
-const KEY="haushaltsbestand_iphone_v1";let items=JSON.parse(localStorage.getItem(KEY)||"[]"),reader=null,controls=null,mode="minus";
-const $=id=>document.getElementById(id);
-function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
-function low(x){return Number(x.qty)<=Number(x.min)}
-function save(){localStorage.setItem(KEY,JSON.stringify(items));render()}
-function render(){let q=$("search").value.toLowerCase(),f=$("filter").value;let cats=[...new Set(items.map(x=>x.cat).filter(Boolean))],old=f;$("filter").innerHTML='<option value="">Alle</option>'+cats.map(c=>`<option>${esc(c)}</option>`).join("");$("filter").value=cats.includes(old)?old:"";$("nA").textContent=items.length;$("nP").textContent=items.reduce((a,x)=>a+Number(x.qty||0),0);$("nL").textContent=items.filter(low).length;let arr=items.filter(x=>(!q||(`${x.name} ${x.ean}`).toLowerCase().includes(q))&&(!f||x.cat===f));$("list").innerHTML=arr.length?arr.map(card).join(""):'<div class="empty">Keine Artikel vorhanden.</div>';let sh=items.filter(low);$("shop").innerHTML=sh.length?sh.map(x=>`<div class="item"><div class="itemtop"><div><h3>${esc(x.name)}</h3><div class="meta">Bestand ${x.qty} · Minimum ${x.min}</div></div></div><div class="actions"><button class="action green" onclick="plus('${x.id}')">+1 gekauft</button><button class="action gray" onclick="edit('${x.id}')">Bearbeiten</button></div></div>`).join(""):'<div class="empty">Einkaufsliste ist leer 🎉</div>'}
-function card(x){return `<div class="item"><div class="itemtop"><div><h3>${esc(x.name)}</h3><div class="meta">${esc(x.cat)} · ${esc(x.place||"kein Lagerort")} · EAN ${esc(x.ean||"—")}</div></div><b>${x.qty}</b></div>${low(x)?'<div class="notice">⚠️ Auf Einkaufsliste</div>':""}<div class="actions"><button class="action red" onclick="minus('${x.id}')">−1 Verbrauch</button><button class="action green" onclick="plus('${x.id}')">+1 Einlagern</button><button class="action gray" onclick="edit('${x.id}')">Bearbeiten</button><button class="action gray" onclick="removeItem('${x.id}')">Löschen</button></div></div>`}
-function minus(id){let x=items.find(i=>i.id===id);if(x){x.qty=Math.max(0,Number(x.qty)-1);save()}}function plus(id){let x=items.find(i=>i.id===id);if(x){x.qty=Number(x.qty)+1;save()}}function removeItem(id){if(confirm("Artikel löschen?")){items=items.filter(x=>x.id!==id);save()}}
-function edit(id){let x=items.find(i=>i.id===id);if(!x)return;show("neu");$("id").value=x.id;$("ean").value=x.ean;$("name").value=x.name;$("qty").value=x.qty;$("min").value=x.min;$("cat").value=x.cat;$("place").value=x.place;$("expiry").value=x.expiry||""}
-function show(v){document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));$(v).classList.add("active");document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.v===v))}
-document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>show(x.dataset.v));$("search").oninput=render;$("filter").onchange=render;$("reset").onclick=()=>{$("form").reset();$("id").value="";$("qty").value=1;$("min").value=1};
-$("form").onsubmit=e=>{e.preventDefault();let id=$("id").value||crypto.randomUUID(),x={id,ean:$("ean").value.trim(),name:$("name").value.trim(),qty:Number($("qty").value),min:Number($("min").value),cat:$("cat").value,place:$("place").value.trim(),expiry:$("expiry").value},i=items.findIndex(a=>a.id===id);if(i>=0)items[i]=x;else items.push(x);save();$("reset").click();show("bestand")};
-$("export").onclick=()=>{let b=new Blob([JSON.stringify(items,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="haushaltsbestand-sicherung.json";a.click()};
-$("import").onchange=e=>{let f=e.target.files[0],r=new FileReader();if(f)r.onload=()=>{try{items=JSON.parse(r.result);save();alert("Import erfolgreich.")}catch{alert("Import fehlgeschlagen.")}};r.readAsText(f)};
-$("clear").onclick=()=>{if(confirm("Alle Daten löschen?")){items=[];save()}};
-$("scanNew").onclick=()=>openScanner("new");$("mminus").onclick=()=>mode="minus";$("mplus").onclick=()=>mode="plus";$("close").onclick=closeScanner;$("manual").onclick=()=>{let e=prompt("EAN eingeben");if(e)handleEAN(e.trim())};
-async function openScanner(m){mode=m;$("modal").classList.add("open");$("scanStatus").textContent="Kamera wird gestartet…";try{if(!window.ZXingBrowser)throw Error();reader=new ZXingBrowser.BrowserMultiFormatReader();let devices=await ZXingBrowser.BrowserCodeReader.listVideoInputDevices();let back=devices.find(d=>/back|rear|environment/i.test(d.label))||devices[devices.length-1];controls=await reader.decodeFromVideoDevice(back?.deviceId, $("video"), (result,error)=>{if(result)handleEAN(result.getText())});$("scanStatus").textContent="Barcode mittig ins Bild halten."}catch(e){$("scanStatus").textContent="Scanner konnte nicht gestartet werden. Bitte EAN manuell eingeben."}}
-function closeScanner(){try{controls?.stop()}catch{}controls=null;try{reader?.reset()}catch{}reader=null;$("modal").classList.remove("open")}
-function handleEAN(ean){if(mode==="new"){closeScanner();show("neu");$("ean").value=ean;let x=items.find(i=>i.ean===ean);if(x)edit(x.id);else $("name").focus();return}let x=items.find(i=>i.ean===ean);if(!x){closeScanner();if(confirm("EAN nicht gefunden. Neuen Artikel anlegen?")){show("neu");$("ean").value=ean;$("name").focus()}return}if(mode==="plus")x.qty++;else x.qty=Math.max(0,x.qty-1);save();closeScanner();show("bestand")}
-render();if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
-</script>
-</body></html>
+const KEY='mein-haushaltshelfer-plus-v1';
+const week=[
+{day:'Montag',name:'Vollkornspaghetti Bolognese',time:'30 Min.',cost:11,ingredients:['400 g Vollkornspaghetti','400 g Rinderhack','1 Zwiebel','2 Möhren','500 g passierte Tomaten'],steps:'Zwiebel und Möhren würfeln. Hack anbraten, Gemüse und Tomaten dazugeben und etwa 20 Minuten köcheln lassen. Mit Vollkornspaghetti servieren.'},
+{day:'Dienstag',name:'Airfryer-Hähnchen mit Kartoffeln und Gemüse',time:'35 Min.',cost:13,ingredients:['600 g Hähnchen','800 g Kartoffeln','500 g Gemüse','1 EL Öl'],steps:'Kartoffeln klein schneiden, mit wenig Öl würzen und im Airfryer bei etwa 190 °C 20–25 Minuten garen. Hähnchen je nach Stückgröße separat vollständig durchgaren; Gemüse dazu servieren.'},
+{day:'Mittwoch',name:'Putenbällchen mit Tomatensoße und Reis',time:'30 Min.',cost:12,ingredients:['500 g Putenhack','300 g Reis','500 g passierte Tomaten','1 Zwiebel'],steps:'Reis kochen. Aus Putenhack kleine Bällchen formen und vollständig durchbraten. Zwiebel und Tomaten zugeben und köcheln lassen.'},
+{day:'Donnerstag',name:'Gemüse-Omelett mit Vollkornbrot und Kräuterquark',time:'20 Min.',cost:9,ingredients:['8 Eier','500 g Gemüse','1 Vollkornbrot','250 g Quark'],steps:'Gemüse klein schneiden und anbraten. Eier verquirlen, dazugeben und stocken lassen. Quark mit Kräutern würzen und mit Vollkornbrot servieren.'},
+{day:'Freitag',name:'Airfryer-Seelachs mit Kartoffeln und Erbsen',time:'30 Min.',cost:14,ingredients:['600 g Seelachsfilet','800 g Kartoffeln','400 g Erbsen','1 Zitrone'],steps:'Kartoffeln garen. Fisch würzen und im Airfryer bei etwa 180 °C je nach Dicke 8–12 Minuten garen, bis er durch ist. Erbsen erwärmen und Zitrone dazu reichen.'},
+{day:'Samstag',name:'Chili con carne mit Reis',time:'35 Min.',cost:13,ingredients:['400 g Rinderhack','1 Dose Kidneybohnen','1 Dose Mais','500 g Tomaten','300 g Reis'],steps:'Hack anbraten, Tomaten, abgespülte Bohnen und Mais dazugeben und 20 Minuten köcheln lassen. Mit gekochtem Reis servieren.'},
+{day:'Sonntag',name:'Airfryer-Schweinefilet mit Kartoffeln und Bohnen',time:'35 Min.',cost:15,ingredients:['600 g Schweinefilet','800 g Kartoffeln','400 g grüne Bohnen'],steps:'Kartoffeln und Bohnen garen. Filet würzen und im Airfryer abhängig von Dicke und Gerät garen; Kerntemperatur prüfen und vollständig durchgaren.'}
+];
+let data={pantry:[],shopping:[],money:[],budget:100};
+try{data={...data,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){}
+const $=id=>document.getElementById(id), euro=n=>Number(n||0).toLocaleString('de-DE',{style:'currency',currency:'EUR'});
+function save(){localStorage.setItem(KEY,JSON.stringify(data));render()}
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.tab).classList.add('active')}));
+function addShop(name,qty=''){if(!data.shopping.some(x=>x.name.toLowerCase()===name.toLowerCase()&&!x.done))data.shopping.push({id:Date.now()+Math.random(),name,qty,done:false});}
+$('pantryForm').onsubmit=e=>{e.preventDefault();data.pantry.push({id:Date.now(),name:$('pName').value.trim(),qty:+$('pQty').value,unit:$('pUnit').value,min:+$('pMin').value,expiry:$('pExpiry').value,cat:$('pCat').value});e.target.reset();$('pQty').value=1;$('pMin').value=1;save()};
+$('shopForm').onsubmit=e=>{e.preventDefault();addShop($('sName').value.trim(),$('sQty').value.trim());e.target.reset();save()};
+$('moneyForm').onsubmit=e=>{e.preventDefault();data.money.push({id:Date.now(),type:$('mType').value,amount:+$('mAmount').value,cat:$('mCat').value,date:$('mDate').value,note:$('mNote').value});e.target.reset();$('mDate').value=new Date().toISOString().slice(0,10);save()};
+$('budget').onchange=()=>{data.budget=Math.max(0,+$('budget').value||0);save()};
+function renderPantry(){$('pantryList').innerHTML=data.pantry.length?data.pantry.map(p=>`<div class="item"><div><strong>${esc(p.name)}</strong><small>${p.qty} ${esc(p.unit||'')} · ${esc(p.cat||'')}${p.expiry?' · MHD: '+esc(p.expiry):''}${p.qty<=p.min?' · <b>Wenig Bestand</b>':''}</small></div><div><button class="secondary" onclick="changeQty(${p.id},-1)">−</button> <button class="secondary" onclick="changeQty(${p.id},1)">+</button> <button class="secondary" onclick="toShop(${p.id})">Einkaufen</button> <button class="danger" onclick="delPantry(${p.id})">×</button></div></div>`).join(''):'<p class="muted">Noch keine Vorräte eingetragen.</p>'}
+function changeQty(id,d){let p=data.pantry.find(x=>x.id===id);if(p)p.qty=Math.max(0,+(p.qty+d).toFixed(1));save()}function delPantry(id){data.pantry=data.pantry.filter(x=>x.id!==id);save()}function toShop(id){let p=data.pantry.find(x=>x.id===id);if(p)addShop(p.name,p.unit||'');save()}
+function renderShop(){$('shoppingList').innerHTML=data.shopping.length?data.shopping.map(s=>`<div class="item"><label style="display:flex;gap:8px;align-items:center;margin:0"><input type="checkbox" style="width:auto" ${s.done?'checked':''} onchange="toggleShop(${s.id})"><span class="${s.done?'done':''}">${esc(s.name)} ${s.qty?'<small>'+esc(s.qty)+'</small>':''}</span></label><button class="danger" onclick="delShop(${s.id})">×</button></div>`).join(''):'<p class="muted">Deine Einkaufsliste ist leer.</p>'}function toggleShop(id){let x=data.shopping.find(s=>s.id===id);if(x)x.done=!x.done;save()}function delShop(id){data.shopping=data.shopping.filter(s=>s.id!==id);save()}
+function renderMeals(){$('mealList').innerHTML=week.map((m,i)=>`<div class="meal"><h3>${m.day}: ${m.name}</h3><p class="muted">${m.time} · ca. ${euro(m.cost)} für 4 Personen</p><button class="secondary" onclick="showRecipe(${i})">Rezept ansehen</button> <button onclick="recipeShop(${i})">Zutaten einkaufen</button></div>`).join('');$('homeMeals').innerHTML=week.map(m=>`<div class="meal"><strong>${m.day}</strong> · ${m.name}</div>`).join('')}
+function showRecipe(i){let m=week[i];$('recipeDetails').innerHTML=`<h3>${m.name}</h3><p><b>Zutaten für 4:</b></p><ul>${m.ingredients.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul><p><b>Zubereitung:</b> ${esc(m.steps)}</p><button onclick="recipeShop(${i})">Zutaten auf Einkaufsliste</button>`}
+function recipeShop(i){week[i].ingredients.forEach(line=>{let name=line.replace(/^[\d.,½¼¾]+\s*(g|kg|ml|l|Stück|Dose|EL|TL)?\s*/i,'').trim();addShop(name,line)});save();document.querySelector('[data-tab="shopping"]').click()}
+function renderMoney(){let month=new Date().toISOString().slice(0,7);let spend=data.money.filter(x=>x.type==='expense'&&x.date?.startsWith(month)).reduce((a,x)=>a+x.amount,0);$('monthSpend').textContent=euro(spend);$('remaining').textContent=euro(data.budget-spend);$('budget').value=data.budget;$('moneyList').innerHTML=data.money.slice().reverse().map(m=>`<div class="item"><div><strong>${m.type==='expense'?'−':'+'}${euro(m.amount)}</strong><small>${esc(m.date)} · ${esc(m.cat)}${m.note?' · '+esc(m.note):''}</small></div><button class="danger" onclick="delMoney(${m.id})">×</button></div>`).join('')||'<p class="muted">Noch keine Buchungen.</p>'}
+function delMoney(id){data.money=data.money.filter(x=>x.id!==id);save()}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){$('lowCount').textContent=data.pantry.filter(p=>p.qty<=p.min).length;$('shopCount').textContent=data.shopping.filter(s=>!s.done).length;renderPantry();renderShop();renderMeals();renderMoney()}
+$('weekShop').onclick=()=>{week.forEach((m,i)=>m.ingredients.forEach(line=>{let name=line.replace(/^[\d.,½¼¾]+\s*(g|kg|ml|l|Stück|Dose|EL|TL)?\s*/i,'').trim();addShop(name,line)}));save();document.querySelector('[data-tab="shopping"]').click()};
+$('offers').onclick=()=>{let q=data.shopping.filter(x=>!x.done).map(x=>x.name).join(' ');window.open('https://www.google.com/search?q='+encodeURIComponent((q||'Lebensmittel')+' Angebote'),'_blank','noopener')};
+$('export').onclick=()=>{let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='haushaltshelfer-sicherung.json';a.click();URL.revokeObjectURL(a.href)};
+$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!d||!Array.isArray(d.pantry)||!Array.isArray(d.shopping)||!Array.isArray(d.money))throw Error();if(confirm('Import ersetzt die aktuellen Daten. Fortfahren?')){data=d;save();alert('Sicherung importiert.')}}catch(err){alert('Die Datei konnte nicht als Sicherung gelesen werden.')}e.target.value=''};
+$('mDate').value=new Date().toISOString().slice(0,10);
+render();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script></body></html>
